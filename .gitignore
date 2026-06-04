@@ -1,0 +1,14 @@
+.metadata/
+
+target/
+.idea/
+*.iml
+
+.classpath
+.project
+.settings/
+
+logs/
+*.log
+
+.env
