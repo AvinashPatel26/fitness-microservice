@@ -1,0 +1,78 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8181/realms/fitness-app/protocol/openid-connect/certs      
+
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            # Business APIs
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/users/**
+
+            - id: activity-service
+              uri: lb://ACTIVITY-SERVICE
+              predicates:
+                - Path=/api/activities/**
+
+            - id: ai-service
+              uri: lb://AI-SERVICE
+              predicates:
+                - Path=/api/recommendations/**
+
+#             # Swagger/OpenAPI routes
+#             - id: user-service-docs
+#               uri: lb://USER-SERVICE
+#               predicates:
+#                 - Path=/user-service/v3/api-docs
+#               filters:
+#                 - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+#             - id: activity-service-docs
+#               uri: lb://ACTIVITY-SERVICE
+#               predicates:
+#                 - Path=/activity-service/v3/api-docs
+#               filters:
+#                 - RewritePath=/activity-service/(?<segment>.*), /$\{segment}
+
+#             - id: ai-service-docs
+#               uri: lb://AI-SERVICE
+#               predicates:
+#                 - Path=/ai-service/v3/api-docs
+#               filters:
+#                 - RewritePath=/ai-service/(?<segment>.*), /$\{segment}
+
+# springdoc:
+#   api-docs:
+#     enabled: true
+
+#   swagger-ui:
+#     enabled: true
+#     path: /swagger-ui.html
+
+#     urls:
+#       - name: User Service
+#         url: /user-service/v3/api-docs
+
+#       - name: Activity Service
+#         url: /activity-service/v3/api-docs
+
+#       - name: AI Service
+#         url: /ai-service/v3/api-docs
